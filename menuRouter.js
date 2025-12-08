@@ -1,32 +1,23 @@
 const express = require("express");
-const {
-  saveVeg,
-  getVeg,
-  saveNonVeg,
-  getNonVeg,
-  saveAllVeg,
-  saveAllNonVeg,
-  deleteVeg,
-  deleteNonVeg,
-  deleteAllVeg,
-  deleteAllNonVeg
-} = require("./menuController");
-
 const router = express.Router();
+const controller = require("./menuController");
 
-router.post("/saveveg", saveVeg);
-router.get("/getveg", getVeg);
+// Veg
+router.post("/saveveg", controller.saveVeg);
+router.get("/getveg", controller.getVeg);
 
-router.post("/savenonveg", saveNonVeg);
-router.get("/getnonveg", getNonVeg);
+// Non-veg
+router.post("/savenonveg", controller.saveNonVeg);
+router.get("/getnonveg", controller.getNonVeg);
 
-router.post("/saveallveg", saveAllVeg);
-router.post("/saveallnonveg", saveAllNonVeg);
+// Bulk
+router.post("/saveallveg", controller.saveAllVeg);
+router.post("/saveallnonveg", controller.saveAllNonVeg);
 
-router.delete("/deleteveg/:name", deleteVeg);
-router.delete("/deletenonveg/:name", deleteNonVeg);
-
-router.delete("/deleteallveg", deleteAllVeg);
-router.delete("/deleteallnonveg", deleteAllNonVeg);
+// Deletes
+router.delete("/deleteveg/:name", controller.deleteVeg);
+router.delete("/deletenonveg/:name", controller.deleteNonVeg);
+router.delete("/deleteallveg", controller.deleteAllVeg);
+router.delete("/deleteallnonveg", controller.deleteAllNonVeg);
 
 module.exports = router;

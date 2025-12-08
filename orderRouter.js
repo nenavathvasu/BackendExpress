@@ -1,11 +1,11 @@
 const express = require("express");
-const { placeOrder, fetchOrders } = require("./OrderController");
 const router = express.Router();
+const { placeOrder, fetchOrders } = require("./orderController");
 
-// POST /api/orders/placeOrder
-router.post("/placeOrder", placeOrder);
+// POST /api/orders/placeorder
+router.post("/placeorder", placeOrder);
 
-// GET /api/orders/fetchOrders
-router.get("/fetchOrders", fetchOrders);
+// GET /api/orders/fetchorders
+router.get("/fetchorders", fetchOrders);
 
 module.exports = router;
