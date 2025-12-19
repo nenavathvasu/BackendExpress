@@ -11,27 +11,34 @@ const authMiddleware = require("./authMiddleWare");
 
 const app = express();
 
-// Middlewares
-app.use(express.json());
-app.use(cors());
+/* ✅ CORS — MUST BE FIRST */
+app.use(
+  cors({
+    origin: "http://localhost:5173", // frontend
+    credentials: true
+  })
+);
 
-// Routes (same style as your example)
+/* Middlewares */
+app.use(express.json());
+
+/* Routes */
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/menu", menuRoutes);
 app.use("/api/v1/orders", authMiddleware, orderRoutes);
 
-// Default route
+/* Default route */
 app.get("/", (req, res) => {
   res.json({ status: "OK", message: "Backend running successfully" });
 });
 
-// MongoDB Connection
+/* MongoDB */
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB Error:", err));
 
-// Server Start
+/* Server */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running → http://localhost:${PORT}`);
