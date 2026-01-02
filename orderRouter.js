@@ -1,11 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const { placeOrder, fetchOrders } = require("./orderController");
+const Order = require("./orderModel"); // change path if needed
 
-// POST /api/orders/placeorder
-router.post("/placeorder", placeOrder);
+// PLACE ORDER
+router.post("/placeorder", async (req, res) => {
+  try {
+    const order = new Order(req.body);
+    await order.save();
 
-// GET /api/orders/fetchorders
-router.get("/fetchorders", fetchOrders);
+    res.status(201).json({
+      message: "Order placed successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+});
 
 module.exports = router;

@@ -2,7 +2,15 @@ const Veg = require("./Veg");
 const NonVeg = require("./NonVeg");
 
 // SAVE ONE VEG
-const saveVegItem = (data) => new Veg(data).save();
+const saveVegItem = (data) => {
+  return new Veg({
+    id: data.id,
+    name: data.name,
+    description: data.description,
+    price: data.price,
+    image: data.image
+  }).save();
+};
 
 // GET ALL VEG
 const getVegItems = () => Veg.find({}, { _id: 0, __v: 0 });
@@ -19,14 +27,14 @@ const saveAllVegItems = (items) => Veg.insertMany(items);
 // SAVE MANY NON-VEG
 const saveAllNonVegItems = (items) => NonVeg.insertMany(items);
 
-// DELETE ONE VEG
-const deleteVegItem = (name) => Veg.deleteOne({ name });
-
-// DELETE ONE NON-VEG
-const deleteNonVegItem = (name) => NonVeg.deleteOne({ name });
+// DELETE ONE VEG (by id or name)
+const deleteVegItem = (id) => Veg.deleteOne({ id });
 
 // DELETE ALL VEG
 const deleteAllVegItems = () => Veg.deleteMany({});
+
+// DELETE ONE NON-VEG
+const deleteNonVegItem = (id) => NonVeg.deleteOne({ id });
 
 // DELETE ALL NON-VEG
 const deleteAllNonVegItems = () => NonVeg.deleteMany({});

@@ -1,23 +1,40 @@
 const express = require("express");
+const {
+  getVegItems,
+  saveVegItem,
+  deleteVegItem
+} = require("./menuService");
+
 const router = express.Router();
-const controller = require("./menuController");
 
-// Veg
-router.post("/saveveg", controller.saveVeg);
-router.get("/getveg", controller.getVeg);
+// GET ALL VEG
+router.get("/veg", async (req, res) => {
+  try {
+    const veg = await getVegItems();
+    res.json(veg);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-// Non-veg
-router.post("/savenonveg", controller.saveNonVeg);
-router.get("/getnonveg", controller.getNonVeg);
+// ADD VEG
+router.post("/veg", async (req, res) => {
+  try {
+    const result = await saveVegItem(req.body);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
 
-// Bulk
-router.post("/saveallveg", controller.saveAllVeg);
-router.post("/saveallnonveg", controller.saveAllNonVeg);
-
-// Deletes
-router.delete("/deleteveg/:name", controller.deleteVeg);
-router.delete("/deletenonveg/:name", controller.deleteNonVeg);
-router.delete("/deleteallveg", controller.deleteAllVeg);
-router.delete("/deleteallnonveg", controller.deleteAllNonVeg);
+// DELETE VEG BY ID
+router.delete("/veg/:id", async (req, res) => {
+  try {
+    await deleteVegItem(Number(req.params.id));
+    res.json({ message: "Veg item deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
