@@ -11,37 +11,36 @@ const authMiddleware = require("./authMiddleWare");
 
 const app = express();
 
-// Middlewares
-app.use(express.json());
-app.use(cors());
-
-// Routes (same style as your example)
-app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/menu", menuRoutes);
-app.use("/api/v1/orders", authMiddleware, orderRoutes);
-
-// Default route
-app.get("/", (req, res) => {
-  res.json({ status: "OK", message: "Backend running successfully" });
-});
-
+/* ✅ CORS — must be BEFORE routes */
 app.use(cors({
   origin: [
-    "http://localhost:5173",          // local dev
-    "http://food-court-frontend.vercel.app" // prod frontend (if any)
+    "http://localhost:5173",
+    "https://food-court-frontend.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
+/* Middlewares */
+app.use(express.json());
 
-// MongoDB Connection
+/* Routes */
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/menu", menuRoutes);
+app.use("/api/v1/orders", authMiddleware, orderRoutes);
+
+/* Default route */
+app.get("/", (req, res) => {
+  res.json({ status: "OK", message: "Backend running successfully" });
+});
+
+/* MongoDB */
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB Error:", err));
 
-// Server Start
+/* Server */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running → http://localhost:${PORT}`);
