@@ -1,4 +1,5 @@
-const Menu = require("./menuModel");
+const Veg = require("./veg");
+const NonVegMenu = require("./NonVeg");
 
 const getItemsByType = async (type) => {
   return await Menu.find({ type });
