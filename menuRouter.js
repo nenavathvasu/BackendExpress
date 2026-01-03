@@ -1,71 +1,68 @@
-const express = require("express");   // ✅ MUST be first line
+const express = require("express");
 
 const {
-  getItemsByType,
-  saveItem,
-  deleteItem
+  getAllVegItems,
+  saveVegItem,
+  deleteVegItem,
+  getAllNonVegItems,
+  saveNonVegItem,
+  deleteNonVegItem
 } = require("./menuService");
 
 const router = express.Router();
 
-/* ================= VEG ================= */
+/* ========= VEG ========= */
 
-// GET ALL VEG
 router.get("/veg", async (req, res) => {
   try {
-    const veg = await getItemsByType("veg");
+    const veg = await getAllVegItems();
     res.json(veg);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ADD VEG
 router.post("/veg", async (req, res) => {
   try {
-    const result = await saveItem({ ...req.body, type: "veg" });
+    const result = await saveVegItem(req.body);
     res.status(201).json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// DELETE VEG
 router.delete("/veg/:id", async (req, res) => {
   try {
-    await deleteItem(req.params.id);
+    await deleteVegItem(req.params.id);
     res.json({ message: "Veg item deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-/* ================= NON-VEG ================= */
+/* ========= NON-VEG ========= */
 
-// GET ALL NON-VEG
 router.get("/nonveg", async (req, res) => {
   try {
-    const nonVeg = await getItemsByType("nonveg");
+    const nonVeg = await getAllNonVegItems();
     res.json(nonVeg);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ADD NON-VEG
 router.post("/nonveg", async (req, res) => {
   try {
-    const result = await saveItem({ ...req.body, type: "nonveg" });
+    const result = await saveNonVegItem(req.body);
     res.status(201).json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// DELETE NON-VEG
 router.delete("/nonveg/:id", async (req, res) => {
   try {
-    await deleteItem(req.params.id);
+    await deleteNonVegItem(req.params.id);
     res.json({ message: "Non-veg item deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
