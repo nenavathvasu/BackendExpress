@@ -1,20 +1,58 @@
-const Veg = require("./veg");
-const NonVegMenu = require("./NonVeg");
+const Veg = require("./Veg");
+const NonVeg = require("./NonVeg");
 
-const getItemsByType = async (type) => {
-  return await Menu.find({ type });
+/* =========================
+   VEG SERVICES
+========================= */
+
+// GET all veg items
+const getAllVegItems = async () => {
+  return await Veg.find();
 };
 
-const saveItem = async (data) => {
-  return await Menu.create(data);
+// ADD veg item
+const saveVegItem = async (data) => {
+  return await Veg.create(data);
 };
 
-const deleteItem = async (id) => {
-  return await Menu.findByIdAndDelete(id);
+// DELETE veg item
+const deleteVegItem = async (id) => {
+  return await Veg.findByIdAndDelete(id);
 };
+
+
+/* =========================
+   NON-VEG SERVICES
+========================= */
+
+// GET all non-veg items
+const getAllNonVegItems = async () => {
+  return await NonVeg.find();
+};
+
+// ADD non-veg item
+const saveNonVegItem = async (data) => {
+  return await NonVeg.create(data);
+};
+
+// DELETE non-veg item
+const deleteNonVegItem = async (id) => {
+  return await NonVeg.findByIdAndDelete(id);
+};
+
+
+/* =========================
+   EXPORTS
+========================= */
 
 module.exports = {
-  getItemsByType,
-  saveItem,
-  deleteItem
+  // Veg
+  getAllVegItems,
+  saveVegItem,
+  deleteVegItem,
+
+  // Non-Veg
+  getAllNonVegItems,
+  saveNonVegItem,
+  deleteNonVegItem
 };
