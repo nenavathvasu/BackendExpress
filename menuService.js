@@ -1,4 +1,4 @@
-const Veg = require("./veg");
+const Veg = require("./Veg");
 const NonVeg = require("./NonVeg");
 
 // Veg
