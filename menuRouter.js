@@ -1,75 +1,41 @@
-const express = require("express");   // ✅ MUST be first line
-
-const {
-  getItemsByType,
-  saveItem,
-  deleteItem
-} = require("./menuService");
-
+const express = require("express");
 const router = express.Router();
 
-/* ================= VEG ================= */
+const {
+  getVegItems,
+  saveVegItem,
+  deleteVegItem,
+  getNonVegItems,
+  saveNonVegItem,
+  deleteNonVegItem
+} = require("./menuService");
 
-// GET ALL VEG
+// VEG
 router.get("/veg", async (req, res) => {
-  try {
-    const veg = await getItemsByType("veg");
-    res.json(veg);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  res.json(await getVegItems());
 });
 
-// ADD VEG
 router.post("/veg", async (req, res) => {
-  try {
-    const result = await saveItem({ ...req.body, type: "veg" });
-    res.status(201).json(result);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+  res.status(201).json(await saveVegItem(req.body));
 });
 
-// DELETE VEG
 router.delete("/veg/:id", async (req, res) => {
-  try {
-    await deleteItem(req.params.id);
-    res.json({ message: "Veg item deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  await deleteVegItem(req.params.id);
+  res.json({ message: "Veg deleted" });
 });
 
-/* ================= NON-VEG ================= */
-
-// GET ALL NON-VEG
+// NON-VEG
 router.get("/nonveg", async (req, res) => {
-  try {
-    const nonVeg = await getItemsByType("nonveg");
-    res.json(nonVeg);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  res.json(await getNonVegItems());
 });
 
-// ADD NON-VEG
 router.post("/nonveg", async (req, res) => {
-  try {
-    const result = await saveItem({ ...req.body, type: "nonveg" });
-    res.status(201).json(result);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+  res.status(201).json(await saveNonVegItem(req.body));
 });
 
-// DELETE NON-VEG
 router.delete("/nonveg/:id", async (req, res) => {
-  try {
-    await deleteItem(req.params.id);
-    res.json({ message: "Non-veg item deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  await deleteNonVegItem(req.params.id);
+  res.json({ message: "Non-veg deleted" });
 });
 
 module.exports = router;

@@ -10,9 +10,6 @@ exports.loginUser = async (email, password) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new Error("Incorrect password");
 
-  if (!process.env.JWT_SECRET)
-    throw new Error("JWT_SECRET missing in .env");
-
   const token = jwt.sign(
     { id: user._id },
     process.env.JWT_SECRET,
@@ -23,5 +20,12 @@ exports.loginUser = async (email, password) => {
   user.tokenExpiresAt = Date.now() + 24 * 60 * 60 * 1000;
   await user.save();
 
-  return { user, token };
+  return {
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email
+    }
+  };
 };

@@ -2,23 +2,19 @@ const express = require("express");
 const router = express.Router();
 
 const User = require("./userSchema");
-const { register, login } = require("./registerService");
+const { register } = require("./registerService");
+const { login } = require("./loginController");
 
-// Register route
+// Register
 router.post("/register", register);
 
-// Login route
+// Login
 router.post("/login", login);
 
 // Check email
 router.post("/check-email", async (req, res) => {
-  try {
-    const { email } = req.body;
-    const exists = !!(await User.findOne({ email }));
-    return res.json({ exists });
-  } catch (err) {
-    return res.status(500).json({ message: "Server error" });
-  }
+  const exists = !!(await User.findOne({ email: req.body.email }));
+  res.json({ exists });
 });
 
 module.exports = router;

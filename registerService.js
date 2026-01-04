@@ -9,25 +9,20 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "All fields required" });
 
     const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ message: "Email exists" });
+    if (exists)
+      return res.status(400).json({ message: "Email already exists" });
 
     const hashed = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
+    await User.create({
       name,
       email,
-      password: hashed,
+      password: hashed
     });
 
-    return res.status(201).json({ message: "Registered", user });
+    res.status(201).json({ message: "Registered successfully" });
 
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};
-
-
-// TEMP login to avoid crash until you add real logic
-exports.login = (req, res) => {
-  res.json({ message: "Login working" });
 };
